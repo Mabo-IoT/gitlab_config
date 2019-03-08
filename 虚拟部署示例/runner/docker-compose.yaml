@@ -1,0 +1,19 @@
+gitlab:
+    image: '${DOCKER_PRIVATE_REGISTRY}gitlab/gitlab-runner:latest'
+    restart: always
+    # hostname: '192.168.253.131'
+    container_name: gitlab-runner
+    volumes:
+        - "/var/run/docker.sock:/var/run/docker.sock"
+        - "./gitlab-runner/config:/etc/gitlab-runner"
+    command: >
+       register 
+       --non-interactive 
+       --executor "docker" 
+       --docker-image alpine:3 
+       --url 'https://192.168.253.131:2443/' 
+       --registration-token "inAsxLsyByQkckPwuNwg" 
+       --description "docker-runner" 
+       --tag-list "docker" 
+       --run-untagged 
+       --locked="false"

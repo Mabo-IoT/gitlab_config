@@ -1,0 +1,37 @@
+gitlab:
+  image: '${DOCKER_PRIVATE_REGISTRY}gitlab/gitlab-ce:latest'
+  restart: always
+  hostname: '192.168.253.131'
+  environment:
+    GITLAB_OMNIBUS_CONFIG: |
+      external_url 'https://192.168.253.131:2443'
+      letsencrypt['enable'] = false
+      nginx['redirect_http_to_https'] = true
+      nginx['ssl_certificate'] = "/etc/gitlab/192.168.253.131.crt"
+      nginx['ssl_certificate_key'] = "/etc/gitlab/192.168.253.131.key"
+      # Add any other gitlab.rb configuration here, each on its own line
+      registry_external_url 'https://192.168.253.131:10051'
+      registry['enable'] = true
+      registry['api_url'] = 'https://192.168.253.131:10051'
+      registry['path'] = "/var/lib/registry"
+      registry_nginx['enable'] = true
+      registry_nginx['listen_port'] = 10051
+      registry_nginx['listen_https'] = 10051
+      registry_nginx['proxy_set_headers'] = {
+          "X-Forwarded-Proto" => "https",
+          "X-Forwarded-Ssl" => "on"
+          }
+      #registry_nginx['redirect_http_to_https'] = true
+      registry_nginx['ssl_certificate'] = "/etc/gitlab/nginx.pem"
+      registry_nginx['ssl_certificate_key'] = "/etc/gitlab/nginx.key"
+  ports:
+    - '2080:80'
+    - '2443:2443'
+    - '2022:22'
+    - '10051:10051'
+  volumes:
+    - './config:/etc/gitlab'
+    - './logs:/var/log/gitlab'
+    - './data:/var/opt/gitlab'
+    - './registry:/var/lib/registry'
+
