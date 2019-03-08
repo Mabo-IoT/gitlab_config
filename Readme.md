@@ -29,7 +29,7 @@ CI作为gitlab最大的福利之一，可以极大程度把重复性劳动交给
 
 CI的触发默认为提交即触发。同时，gitlab提供许多用于ci的环境变量，在保证自动化效率的同时，最大程度地保证安全性。
 
-![gitlab ci](jpg\cicd_pipeline_infograph.png)
+![](jpg\cicd_pipeline_infograph.png)
 
 详见 [CI文件编写指南](CI文件编写指南.md)
 
